@@ -26,10 +26,16 @@ with MiniLasEvo(args.port640) as laser640, \
 	print(laser405.idn)
 	print(laser405.operating_hours, 'operating hours')
 	
-	# enabled = main.findChild((QWidget, ), 'enabled')
-	# power = main.findChild((QWidget, ), 'power')
-	
-	# connect_driver(main, [laser640, laser405])
+        def set_powermax(inst):
+            maxi = inst.maximum_power()
+            inst.power = maxi
+        
+        laser640__powermax = main.findChild((QWidget, ), 'laser640__powermax')
+        laser405__powermax = main.findChild((QWidget, ), 'laser405__powermax')
+
+        laser640__powermax.clicked.connect(set_powermax(laser640))
+        laser405__powermax.clicked.connect(set_powermax(laser405))
+
 	connect_driver(main, laser640, prefix='laser640')
 	connect_driver(main, laser405, prefix='laser405')
 	
