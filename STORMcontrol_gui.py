@@ -9,6 +9,7 @@ from Qt.uic import loadUi
 
 from lantz.drivers.rgblasersystems import MiniLasEvo
 from lantz.drivers.prior import NanoScanZ_chained
+from lantz.drivers.labjack import U12
 
 
 app = QApplication(sys.argv)
@@ -26,13 +27,17 @@ args = parser.parse_args()
 
 with MiniLasEvo(args.port640) as laser640, \
      MiniLasEvo(args.port405) as laser405, \
-     NanoScanZ_chained(args.portz) as stagez:
+     NanoScanZ_chained(args.portz) as stagez, \
+     U12(0) as u12:
 
     print(laser640.idn)
-    print(laser640.operating_hours, 'operating hours')
+    # print(laser640.operating_hours, 'operating hours')
     print(laser405.idn)
-    print(laser405.operating_hours, 'operating hours')
+    # print(laser405.operating_hours, 'operating hours')
     print(stagez.idn)
+    print(u12.idn)
+    print(u12.analog_in[1])
+
     
     ### MAXIMUM POWER BUTTONS
     def set_powermax(inst):
