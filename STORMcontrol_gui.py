@@ -8,7 +8,8 @@ from Qt.QtGui import QApplication, QWidget
 from Qt.uic import loadUi
 
 from lantz.drivers.rgblasersystems import MiniLasEvo
-from lantz.drivers.prior import .
+from lantz.drivers.prior import NanoScanZ_chained
+
 
 app = QApplication(sys.argv)
 main = loadUi('STORM_gui.ui')
