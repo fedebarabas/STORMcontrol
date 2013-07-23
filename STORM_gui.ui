@@ -124,7 +124,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Control de láseres</string>
+      <string>Láseres</string>
      </property>
     </widget>
     <widget class="QWidget" name="layoutWidget">
@@ -314,7 +314,17 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_5">
+    <widget class="QGraphicsView" name="graphicsView">
+     <property name="geometry">
+      <rect>
+       <x>260</x>
+       <y>10</y>
+       <width>311</width>
+       <height>221</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_9">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -332,35 +342,60 @@
       </font>
      </property>
      <property name="text">
-      <string>Focus lock</string>
+      <string>Z stage</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QFrame" name="frame_3">
      <property name="geometry">
       <rect>
-       <x>90</x>
-       <y>70</y>
-       <width>87</width>
-       <height>27</height>
+       <x>60</x>
+       <y>160</y>
+       <width>137</width>
+       <height>73</height>
       </rect>
      </property>
-     <property name="text">
-      <string>ON</string>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
      </property>
-     <property name="checkable">
-      <bool>true</bool>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
      </property>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>ON</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>16</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Focus lock</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
-    <widget class="QGraphicsView" name="graphicsView">
-     <property name="geometry">
-      <rect>
-       <x>260</x>
-       <y>10</y>
-       <width>311</width>
-       <height>221</height>
-      </rect>
-     </property>
-    </widget>
+    <zorder>graphicsView</zorder>
+    <zorder>label_9</zorder>
+    <zorder>frame_3</zorder>
+    <zorder>label_5</zorder>
+    <zorder>label_5</zorder>
    </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
