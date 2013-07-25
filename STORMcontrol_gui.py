@@ -36,7 +36,7 @@ with MiniLasEvo(args.port640) as laser640, \
      NanoScanZ_chained(args.portz) as stagez, \
      U12(0) as u12:
 
-    # CHECKING THE ACCESS TO ALL INSTRUMENTS
+    ### CHECKING THE ACCESS TO ALL INSTRUMENTS
     print(laser640.idn)
     print(laser405.idn)
     print(stagez.idn)
@@ -54,18 +54,17 @@ with MiniLasEvo(args.port640) as laser640, \
     laser405__powermax.clicked.connect(lambda: set_powermax(laser405))
     ###
    
-    # CONNECTING DRIVERS TO WIDGETS
+    ### CONNECTING DRIVERS TO WIDGETS
     connect_driver(main, laser640, prefix='laser640')
     connect_driver(main, laser405, prefix='laser405')
     connect_driver(main, stagez, prefix='stagez')
     focus_lock_on = main.findChild((QWidget, ), 'focus_lock_on')
     
-    # MOVE Z STAGE TO ITS DYNAMIC RANGE CENTER AND DEFINE IT AS Z = 0
+    ### MOVE Z STAGE TO ITS DYNAMIC RANGE CENTER AND DEFINE IT AS Z = 0
     stagez.move_absolute(50 * um)
     stagez.position = 0 * um
     
-    # FOCUS LOCK FUNCTION
-    #class Focus_lock(QObject):
+    ### FOCUS LOCK FUNCTION
     class Focus_lock(QThread):
         def __init__(self, parent = None):
             QThread.__init__(self, parent)
@@ -76,9 +75,6 @@ with MiniLasEvo(args.port640) as laser640, \
                 time.sleep(1)
                 print('looping')
 
-    #thread = QThread()
-    #focus_lock = Focus_lock()
-    #focus_lock.moveToThread(thread)
     thread = Focus_lock()
     
     def handletoggle(self):
@@ -96,6 +92,8 @@ with MiniLasEvo(args.port640) as laser640, \
             
                 
     focus_lock_on.clicked.connect(handletoggle)
+    ###
+
 
     main.show()
     exit(app.exec_())   
