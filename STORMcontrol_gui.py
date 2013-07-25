@@ -1,12 +1,16 @@
 import sys
 import argparse
+import time
 
 # LANTZ IMPORTS
 import lantz.ui
 from lantz import Q_
 from lantz.ui.qtwidgets import connect_driver
 from Qt.QtGui import QApplication, QWidget
+#from PySide.QtGui import *
+#from PySide.QtCore import *
 from Qt.uic import loadUi
+from Qt.QtCore import QThread, QObject
 
 # DRIVER IMPORTS
 from lantz.drivers.rgblasersystems import MiniLasEvo
@@ -61,11 +65,37 @@ with MiniLasEvo(args.port640) as laser640, \
     stagez.position = 0 * um
     
     # FOCUS LOCK FUNCTION
-    def focus_lock():
-        while focus_lock_on.pressed() = True:
-            print('presionado'
+    #class Focus_lock(QObject):
+    class Focus_lock(QThread):
+        def __init__(self, parent = None):
+            QThread.__init__(self, parent)
+            self.exiting = False
 
-    focus_lock_on.pressed.connect(focus_lock)
+        def run(self):
+            while self.exiting==False:
+                time.sleep(1)
+                print('looping')
+
+    #thread = QThread()
+    #focus_lock = Focus_lock()
+    #focus_lock.moveToThread(thread)
+    thread = Focus_lock()
+    
+    def handletoggle(self):
+        if thread.isRunning():
+            thread.exiting = True
+            while thread.isRunning():
+                time.sleep(0.01)
+                continue
+        else:
+            thread.exiting = False
+            thread.start()
+            while not thread.isRunning():
+                time.sleep(0.01)
+                continue
+            
+                
+    focus_lock_on.clicked.connect(handletoggle)
 
     main.show()
     exit(app.exec_())   
