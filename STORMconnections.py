@@ -1,14 +1,20 @@
+import time
+
+# QT IMPORTS
 from Qt.uic import loadUiType
 from Qt.QtCore import QThread, QObject
+from Qt.QtGui import QWidget
 
 Form_class, qt_class = loadUiType('STORMgui.ui')
 
-class Connections(Form_class):
+class Connections(Form_class, qt_class):
 
     def __init__(self, laser1, laser2, zstage, daq, *args, **kwargs):
         
         super().__init__(*args, **kwargs)
-       
+
+        self.setupUi(self)
+
         ### FOCUS LOCK FUNCTION
         class Focus_lock(QThread):
             def __init__(self, parent = None):
@@ -45,14 +51,14 @@ class Connections(Form_class):
                 inst.power = inst.maximum_power
             laser640__powermax = self.findChild((QWidget, ), 'laser640__powermax')
             laser640__powermax.clicked.connect(lambda: set_powermax(laser640))
-            laser405__powermax = main.findChild((QWidget, ), 'laser405__powermax')
+            laser405__powermax = self.findChild((QWidget, ), 'laser405__powermax')
             laser405__powermax.clicked.connect(lambda: set_powermax(laser405))
             ###
     
             ### CONNECTING DRIVERS TO WIDGETS
-            connect_driver(main, laser640, prefix='laser640')
-            connect_driver(main, laser405, prefix='laser405')
-            connect_driver(main, stagez, prefix='stagez')
+            connect_driver(self, laser640, prefix='laser640')
+            connect_driver(self, laser405, prefix='laser405')
+            connect_driver(self, stagez, prefix='stagez')
         
             ### MOVE Z STAGE TO ITS DYNAMIC RANGE CENTER AND DEFINE IT AS Z = 0
             stagez.move_absolute(50 * um)
