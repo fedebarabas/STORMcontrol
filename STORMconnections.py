@@ -1,20 +1,22 @@
+
 import time
+import sys, os, random
+
+from numpy import arange, sin, pi
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 # QT IMPORTS
-from Qt.uic import loadUiType, loadUi
+from Qt.uic import loadUi
 from Qt.QtCore import QThread, QObject
 from Qt.QtGui import QWidget, QMainWindow
 
-# Form_class, qt_class = loadUiType('STORMgui.ui')
-
-# class Connections(Form_class, qt_class):
 class Connections(QMainWindow):
 
     def __init__(self, laser1, laser2, zstage, daq, *args, **kwargs):
         
         super().__init__(*args, **kwargs)
 
-        # self.setupUi(self)
         loadUi('STORMgui.ui', self)
 
         ### FOCUS LOCK FUNCTION

@@ -7,7 +7,6 @@ import lantz.ui
 from lantz import Q_
 from lantz.ui.qtwidgets import connect_driver
 from Qt.QtGui import QApplication
-# from Qt.QtCore import QThread, QObject
 
 # DRIVER IMPORTS
 from lantz.drivers.rgblasersystems import MiniLasEvo
