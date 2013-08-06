@@ -1,19 +1,21 @@
 import time
 
 # QT IMPORTS
-from Qt.uic import loadUiType
+from Qt.uic import loadUiType, loadUi
 from Qt.QtCore import QThread, QObject
-from Qt.QtGui import QWidget
+from Qt.QtGui import QWidget, QMainWindow
 
-Form_class, qt_class = loadUiType('STORMgui.ui')
+# Form_class, qt_class = loadUiType('STORMgui.ui')
 
-class Connections(Form_class, qt_class):
+# class Connections(Form_class, qt_class):
+class Connections(QMainWindow):
 
     def __init__(self, laser1, laser2, zstage, daq, *args, **kwargs):
         
         super().__init__(*args, **kwargs)
 
-        self.setupUi(self)
+        # self.setupUi(self)
+        loadUi('STORMgui.ui', self)
 
         ### FOCUS LOCK FUNCTION
         class Focus_lock(QThread):
