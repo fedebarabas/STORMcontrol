@@ -9,7 +9,7 @@ import numpy as np
 
 # QT IMPORTS
 from PyQt4.uic import loadUi
-from PyQt4.QtCore import QThread, QObject, SIGNAL, SLOT
+from PyQt4.QtCore import QThread, QObject, QTimer, SIGNAL, SLOT
 from PyQt4.QtGui import QWidget, QMainWindow, qApp
 
 from matplotlib import pyplot as plt
@@ -44,12 +44,13 @@ class Connections(QMainWindow):
 
         super().__init__(*args, **kwargs)
 
-        loadUi('STORMgui.ui', self)
+        self.ui = loadUi('STORMgui.ui', self)
+        self.ui.show()
 
         QObject.connect(self.actionQuit, SIGNAL('triggered()'), qApp,
         SLOT("quit()"))
 
-        QObject.connect(self.pushButton, SIGNAL("clicked()"), self.update_graph)
+        #QObject.connect(self.pushButton, SIGNAL("clicked()"), self.update_graph)
 
         ### FOCUS LOCK FUNCTION
         class Focus_lock(QThread):
@@ -61,9 +62,6 @@ class Connections(QMainWindow):
                 while self.exiting == False:
                     time.sleep(1)
                     print('looping')
-
-
-
 
         thread = Focus_lock()
 
@@ -106,20 +104,6 @@ class Connections(QMainWindow):
         focus_lock_on = self.findChild((QWidget, ), 'focus_lock_on')
         focus_lock_on.clicked.connect(handletoggle)
 
-        # connect the signals with the slots
-        #open_push = self.findChild((QWidget, ), 'mplpushButton')
-        #open_push
-
-#        plot_on = self.findChild((QWidget, ), 'pushButton')
-#        plot_on.clicked.connect(self.update_graph)
-
-        def update_graph(self):
-            x = np.arange(0, 10, 0.2)
-            y = np.sin(x)
-            self.mpl.canvas.ax.plot(x, y)
-            self.mpl.canvas.fig.draw()
-
-
-
-
-
+        timer = QTimer(self)
+        QObject.connect(timer, SIGNAL("timeout()"), self.ui.mpl.canvas.update_figure)
+        timer.start(1000)
