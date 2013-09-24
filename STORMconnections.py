@@ -13,6 +13,7 @@ from PyQt4.QtCore import QThread, QObject, QTimer, SIGNAL, SLOT
 from PyQt4.QtGui import QWidget, QMainWindow, qApp
 
 from matplotlib import pyplot as plt
+import pyqtgraph as pg
 
 class DataGen(object):
     """ A silly class that generates pseudo-random data for
@@ -104,6 +105,10 @@ class Connections(QMainWindow):
         focus_lock_on = self.findChild((QWidget, ), 'focus_lock_on')
         focus_lock_on.clicked.connect(handletoggle)
 
-        timer = QTimer(self)
-        QObject.connect(timer, SIGNAL("timeout()"), self.ui.mpl.canvas.update_figure)
-        timer.start(1000)
+        #timer = QTimer(self)
+        #QObject.connect(timer, SIGNAL("timeout()"), self.ui.mpl.canvas.update_figure)
+        #timer.start(1000)
+
+        #pg.lockplot.setLabel('left', 'Value', units='V')
+        #pg.lockplot.setLabel('bottom', 'Time', units='s')
+        lockplot = pg.PlotWidget()
