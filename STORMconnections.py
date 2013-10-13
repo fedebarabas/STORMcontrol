@@ -10,10 +10,14 @@ import numpy as np
 # QT IMPORTS
 from PyQt4.uic import loadUi
 from PyQt4.QtCore import QThread, QObject, QTimer, SIGNAL, SLOT
-from PyQt4.QtGui import QWidget, QMainWindow, qApp
+from PyQt4.QtGui import QWidget, QMainWindow, qApp, QApplication
 
-from matplotlib import pyplot as plt
 import pyqtgraph as pg
+
+from lantz.ui.qtwidgets import connect_driver
+from lantz import Q_
+
+um = Q_(1, 'micrometer')
 
 class DataGen(object):
     """ A silly class that generates pseudo-random data for
@@ -27,8 +31,8 @@ class DataGen(object):
         return self.data
 
     def _recalc_data(self):
-        delta = random.uniform(-0.5, 0.5)
-        r = random.random()
+        delta = np.random.uniform(-0.5, 0.5)
+        r = np.random.random()
 
         if r > 0.9:
             self.data += delta * 15
@@ -41,7 +45,7 @@ class DataGen(object):
 
 class Connections(QMainWindow):
 
-    def __init__(self, laser1, laser2, zstage, daq, *args, **kwargs):
+    def __init__(self, laser640, laser405, zstage, daq, *args, **kwargs):
 
         super().__init__(*args, **kwargs)
 
@@ -79,7 +83,7 @@ class Connections(QMainWindow):
                     time.sleep(0.01)
                     continue
 
-        instruments = [laser1, laser2, zstage, daq]
+        instruments = [laser640, laser405, zstage, daq]
 
         if not None in instruments:
 
@@ -96,11 +100,11 @@ class Connections(QMainWindow):
             ### CONNECTING DRIVERS TO WIDGETS
             connect_driver(self, laser640, prefix='laser640')
             connect_driver(self, laser405, prefix='laser405')
-            connect_driver(self, stagez, prefix='stagez')
+            connect_driver(self, zstage, prefix='stagez')
 
             ### MOVE Z STAGE TO ITS DYNAMIC RANGE CENTER AND DEFINE IT AS Z = 0
-            stagez.move_absolute(50 * um)
-            stagez.position = 0 * um
+            zstage.move_absolute(50 * um)
+            zstage.position = 0 * um
 
         focus_lock_on = self.findChild((QWidget, ), 'focus_lock_on')
         focus_lock_on.clicked.connect(handletoggle)
@@ -112,3 +116,17 @@ class Connections(QMainWindow):
         #pg.lockplot.setLabel('left', 'Value', units='V')
         #pg.lockplot.setLabel('bottom', 'Time', units='s')
         lockplot = pg.PlotWidget()
+        pg.setConfigOptions(antialias=True)
+        curve = lplot.plot(pen='y')
+        data = np.random.normal(size=(10,1000))
+        ptr = 0
+        def update():
+            global curve, data, ptr, p6
+            curve.setData(data[ptr%10])
+            if ptr == 0:
+                lplot.enableAutoRange('xy', False)  ## stop auto-scaling after the first data set is plotted
+            ptr += 1
+        timer = QTimer()
+        timer.timeout.connect(update)
+        timer.start(50)
+        

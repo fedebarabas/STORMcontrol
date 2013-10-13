@@ -4,17 +4,18 @@ import sys
 import argparse
 
 # LANTZ IMPORTS
-import lantz.ui
-from lantz import Q_
-from lantz.ui.qtwidgets import connect_driver
-from Qt.QtGui import QApplication
+#import lantz.ui
+#from lantz import Q_
+#
+from PyQt4.QtGui import QApplication
 
 app = QApplication(sys.argv)
+
 from STORMconnections import Connections
 
 # UNIT DEFINITIONS
-mW = Q_(1, 'milliwatt')
-um = Q_(1, 'micrometer')
+#mW = Q_(1, 'milliwatt')
+#um = Q_(1, 'micrometer')
 
 # COMMAND-LINE ARGUMENTS
 parser = argparse.ArgumentParser()
@@ -38,7 +39,9 @@ args = parser.parse_args()
 
 # TEST MODE
 if args.test:
+
     main = Connections(None, None, None, None)
+    
     main.show()
     exit(app.exec_())
 
