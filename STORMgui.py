@@ -38,10 +38,10 @@ parser.add_argument('-t', '--test',
 args = parser.parse_args()
 
 # TEST MODE
-if args.test:
+if args.test or __name__ == "__main__":
 
     main = Connections(None, None, None, None)
-    
+
     main.show()
     exit(app.exec_())
 

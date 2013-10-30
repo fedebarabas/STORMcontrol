@@ -14,10 +14,10 @@ from PyQt4.QtGui import QWidget, QMainWindow, qApp, QApplication
 
 import pyqtgraph as pg
 
-from lantz.ui.qtwidgets import connect_driver
-from lantz import Q_
-
-um = Q_(1, 'micrometer')
+#from lantz.ui.qtwidgets import connect_driver
+#from lantz import Q_
+#
+#um = Q_(1, 'micrometer')
 
 class DataGen(object):
     """ A silly class that generates pseudo-random data for
@@ -113,20 +113,19 @@ class Connections(QMainWindow):
         #QObject.connect(timer, SIGNAL("timeout()"), self.ui.mpl.canvas.update_figure)
         #timer.start(1000)
 
-        #pg.lockplot.setLabel('left', 'Value', units='V')
-        #pg.lockplot.setLabel('bottom', 'Time', units='s')
-        lockplot = pg.PlotWidget()
+        lockplot = self.ui.lockplot
+        lockplot.setLabel('left', 'Value', units='V')
+        lockplot.setLabel('bottom', 'Time', units='s')
         pg.setConfigOptions(antialias=True)
-        curve = lplot.plot(pen='y')
+        curve = lockplot.plot(pen='y')
         data = np.random.normal(size=(10,1000))
         ptr = 0
         def update():
             global curve, data, ptr, p6
             curve.setData(data[ptr%10])
             if ptr == 0:
-                lplot.enableAutoRange('xy', False)  ## stop auto-scaling after the first data set is plotted
+                lockplot.enableAutoRange('xy', False)  ## stop auto-scaling after the first data set is plotted
             ptr += 1
         timer = QTimer()
         timer.timeout.connect(update)
         timer.start(50)
-        
