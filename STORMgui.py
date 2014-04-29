@@ -11,7 +11,7 @@ from PyQt4.QtGui import QApplication
 
 app = QApplication(sys.argv)
 
-from STORMconnections import Connections
+from STORMconnections import Connections, DynamicPlotter, amplitude
 
 # UNIT DEFINITIONS
 #mW = Q_(1, 'milliwatt')
@@ -43,6 +43,10 @@ if args.test or __name__ == "__main__":
     main = Connections(None, None, None, None)
 
     main.show()
+    
+    m = DynamicPlotter(main.ui.lockplot, amplitude, sampleinterval=0.05, 
+                           timewindow=10.)
+                           
     exit(app.exec_())
 
 # MAIN MODE
@@ -69,4 +73,8 @@ else:
         main = Connections(laser640, laser405, stagez, u12)
 
         main.show()
+        
+        m = DynamicPlotter(main.ui.lockplot, amplitude, sampleinterval=0.05, 
+                           timewindow=10.)        
+        
         exit(app.exec_())
